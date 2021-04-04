@@ -24,15 +24,15 @@ use App\Http\Controllers\Api\Message;
     Route::group(['prefix' => 'auth'], function ($router) {
         Route::post('/register', [AuthController::class, 'register']);
     });
-    Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'auth'], function ($router) {
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/refresh', [AuthController::class, 'refresh']);
-        Route::get('/user-profile', [AuthController::class, 'userProfile']);
-    });
-
+    
     Route::group(['middleware' => ['jwt.verify']], function ($router) {
-        Route::post('/topic', [Topic::class, 'topic']);
-        Route::post('/subscribe/{topic}', [Subscription::class, 'subscribe']);
-        Route::post('/publish/{topic}', [Message::class, 'publish']);
+        Route::group(['prefix' => 'auth'], function ($router) {
+            Route::post('/login', [AuthController::class, 'login']);
+            Route::post('/logout', [AuthController::class, 'logout']);
+            Route::post('/refresh', [AuthController::class, 'refresh']);
+            Route::get('/user-profile', [AuthController::class, 'userProfile']);
+        });
+            Route::post('/topic', [Topic::class, 'topic']);
+            Route::post('/subscribe/{topic}', [Subscription::class, 'subscribe']);
+            Route::post('/publish/{topic}', [Message::class, 'publish']);
     });

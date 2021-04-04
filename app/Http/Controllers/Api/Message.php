@@ -27,7 +27,7 @@ class Message extends Controller
       if(!$subExist){
         return response()->json(['error'=>'No subscriber yet to this topic']);
       }
-      
+
       $message = new PublishedMessage();
       $message->topic = $topic;
       $message->payload = $request['payload'];
