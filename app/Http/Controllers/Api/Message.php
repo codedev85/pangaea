@@ -16,6 +16,7 @@ class Message extends Controller
     public function publish(Request $request ,$topic){
 
       $this->validateRequest($request);
+
       $findTopic = Topic::where('name',$topic)->first();
       $subExist =  Subscription::where('topic',$topic)->first();
 
@@ -26,6 +27,7 @@ class Message extends Controller
       if(!$subExist){
         return response()->json(['error'=>'No subscriber yet to this topic']);
       }
+      
       $message = new PublishedMessage();
       $message->topic = $topic;
       $message->payload = $request['payload'];
@@ -33,13 +35,11 @@ class Message extends Controller
 
       if($message){
           PublishedMessageJob::dispatch($message);
-         // event(new PublishEvent($message));
-//          PublishedMessageJob::dispatch($message)
-//              ->delay(now()->addMinutes(10));
           return response()->json(['status' => true , 'data' => $message]);
       }
 
     }
+
 
     protected function validateRequest($data){
         $data->validate([
