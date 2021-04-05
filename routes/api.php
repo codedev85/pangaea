@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\Message;
     Route::group(['prefix' => 'auth'], function ($router) {
         Route::post('/register', [AuthController::class, 'register']);
     });
-    
+
     Route::group(['middleware' => ['jwt.verify']], function ($router) {
         Route::group(['prefix' => 'auth'], function ($router) {
             Route::post('/login', [AuthController::class, 'login']);
